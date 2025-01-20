@@ -1,0 +1,12 @@
+.venv/
+
+.env
+
+_pycache_/
+*.pyc
+
+.vscode/
+.idea/
+
+
+requirements.txt
