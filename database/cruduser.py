@@ -69,6 +69,8 @@ def delete_user(db:Session,email:str,admin_email:str|None=None,admin_psw:str|Non
             db.delete(db_user)
             db.commit()
             return db_user
+    
+    
         
 
 

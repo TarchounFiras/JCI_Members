@@ -12,7 +12,9 @@ class Member(SQLModel, table=True):
     points:int=Field(default=0)
     avatar:str|None=Field(default=None)
     achievements:List[str]=Field(default=[])
+    presence:int=Field(default=0)
     trend:str=Field(default="stable")
+    rank:int=Field(default=1)
 
     
     

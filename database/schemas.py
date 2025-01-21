@@ -8,9 +8,12 @@ class MemberPublic(BaseModel):
     avatar:str|None=None
     achievements:list[str]
     trend:str
+    rank:int
+
 
 class MemberPublicAdmin(MemberPublic):
     birthday:date|None=None
+    presence:int
     
 class MemberCreate(BaseModel):
     name:str
@@ -29,3 +32,4 @@ class MemberUpdateAdmin(MemberUpdate):
     points:int|None=None
     achievements:list[str]|None=None
     trend:str|None=None
+    rank:int|None=None
