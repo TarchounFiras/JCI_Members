@@ -9,6 +9,7 @@ class MemberPublic(BaseModel):
     achievements:list[str]
     trend:str
     rank:int
+    joining_year:int
 
 
 class MemberPublicAdmin(MemberPublic):
@@ -21,6 +22,8 @@ class MemberCreate(BaseModel):
     avatar:str|None=None
     birthday:date|None=None
     hashed_password:str
+    presence:int
+    joining_year:int|None=None
 
 
 class MemberUpdate(BaseModel):
@@ -33,3 +36,4 @@ class MemberUpdateAdmin(MemberUpdate):
     achievements:list[str]|None=None
     trend:str|None=None
     rank:int|None=None
+    joining_year:int|None=None
