@@ -14,7 +14,9 @@ class Member(SQLModel, table=True):
     achievements:List[str]=Field(default=[])
     presence:int=Field(default=0)
     trend:str=Field(default="stable")
-    rank:int=Field(default=1)
+    rank:int=Field(default=0)
+    joining_year:int=Field(default=date.today().year)
+
 
     
     
