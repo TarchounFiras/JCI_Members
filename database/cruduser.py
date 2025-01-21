@@ -12,19 +12,23 @@ def get_user_by_email(db:Session,email:str):
 pwd_context=CryptContext(schemes=["bcrypt"],deprecated="auto")
 
 def create_user(db:Session,user:schemas.MemberCreate):
-    hashed_password=pwd_context.hash(user.hashed_password)
-    db_user=models.Member(
-        name=user.name,
-        email=user.email,
-        hashed_password=hashed_password,
-        avatar=user.avatar,
-        birthday=user.birthday
-    )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
+    db_user=get_user_by_email(db,user.email)
+    if (db_user):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="email already registered")
+    else:    
+        hashed_password=pwd_context.hash(user.hashed_password)
+        db_user=models.Member(
+            name=user.name,
+            email=user.email,
+            hashed_password=hashed_password,
+            avatar=user.avatar,
+            birthday=user.birthday
+        )
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
 
-    return db_user
+        return db_user
 
 def update_user(db:Session,user:schemas.MemberUpdate,email:str,old_password:str|None=None):
     db_user=get_user_by_email(db,email)
@@ -84,7 +88,7 @@ def update_user_admin(db:Session,user:schemas.MemberUpdateAdmin,email:str,admin_
     db.refresh(db_user)
     return db_user
 
-def delete_user(db:Session,email:str,admin_email:str|None=None,admin_pwd:str|None=None):
+def delete_user(*,db:Session,email:str,admin_email:str|None=None,admin_pwd:str):
     db_user=get_user_by_email(db,email)
     if(db_user is None):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="email not found")

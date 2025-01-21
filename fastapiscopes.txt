@@ -13,6 +13,6 @@ from fastapi.security import (
 the scopes in the oauth2PasswordBrearer 
 make the OAuth2PasswordRequestForm scope field woth me and items
 
-the SecurityScopes have same scopes specified in the ecurity dependency
+the SecurityScopes have same scopes specified in the security dependency
 
 security dependency workds like dependency but with a scope variable

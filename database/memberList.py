@@ -10,21 +10,18 @@ def list_members(db:Session):
     res=list(members)
     for i  in range(len(res)):
         if res[i].rank<i:
-            res[i].rank=i+1
-            res[i].trend="up"
+            db_user=get_user_by_email(db,res[i].email)
+            db_user.rank=i+1
+            db_user.trend="up"
         elif res[i].rank>i:
-            res[i].rank=i+1
-            res[i].trend="down"
-        db.add(res[i])
+            db_user.rank=i+1
+            db_user.trend="down"
+        db.commit()
+        db.refresh(db_user)
         
     db.commit()
+    db.refresh()
     return res
 
 
-def member_profile(db:Session,email:str):
-    member=get_user_by_email(db,email)
-    if (member):
-        return member
-    else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="member not found")
 
