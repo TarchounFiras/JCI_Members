@@ -105,14 +105,15 @@ def get_and_verif_token(security_scopes:SecurityScopes,token:Annotated[str,Depen
         if email is None:
             raise credentials_exception
         token_scopes=payload.get("scopes",[])
+        token_data=TokenData(email=email,scopes=token_scopes)
         for scope in security_scopes.scopes:
-            if scope not in token_scopes:
+            if scope not in token_data.scopes:
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Not enough permissions",
                     headers={"WWW-Authenticate": authenticate_value},
                 )
-        token_data=TokenData(email=email,scopes=token_scopes)
+        
     except (InvalidTokenError,ValidationError):
         raise credentials_exception
     return token_data

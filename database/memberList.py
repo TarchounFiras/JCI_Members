@@ -13,14 +13,16 @@ def list_members(db:Session):
             db_user=get_user_by_email(db,res[i].email)
             db_user.rank=i+1
             db_user.trend="up"
+            db.commit()
+            db.refresh(db_user)
         elif res[i].rank>i:
+            db_user=get_user_by_email(db,res[i].email)
             db_user.rank=i+1
             db_user.trend="down"
-        db.commit()
-        db.refresh(db_user)
+            db.commit()
+            db.refresh(db_user)
         
-    db.commit()
-    db.refresh()
+        
     return res
 
 
