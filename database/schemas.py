@@ -6,7 +6,7 @@ class MemberPublic(BaseModel):
     email:str
     points:int
     avatar:str|None=None
-    achievements:list[str]
+    achievements:str
     trend:str
     rank:int
     joining_year:int
@@ -21,7 +21,7 @@ class MemberCreate(BaseModel):
     email:str
     avatar:str|None=None
     birthday:date|None=None
-    hashed_password:str
+    password:str
     joining_year:int|None=None
 
 
@@ -33,7 +33,7 @@ class MemberUpdate(BaseModel):
 
 class MemberUpdateAdmin(MemberUpdate):
     points:int|None=None
-    achievements:list[str]|None=None
+    achievements:str|None=None
     trend:str|None=None
     rank:int|None=None
     joining_year:int|None=None

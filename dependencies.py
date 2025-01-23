@@ -9,7 +9,8 @@ from datetime import datetime, timedelta,timezone
 from passlib.context import CryptContext
 from pydantic import BaseModel
 import jwt
-from jwt.exceptions import InvalidTokenError ,ValidationError
+from jwt.exceptions import InvalidTokenError
+from pydantic import ValidationError
 from fastapi.security import (OAuth2PasswordBearer , OAuth2PasswordRequestForm , SecurityScopes)
 
 
@@ -105,7 +106,7 @@ def get_and_verif_token(security_scopes:SecurityScopes,token:Annotated[str,Depen
             raise credentials_exception
         token_scopes=payload.get("scopes",[])
         for scope in security_scopes.scopes:
-            if scope not in TokenData.scopes:
+            if scope not in token_scopes:
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Not enough permissions",

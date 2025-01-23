@@ -16,7 +16,7 @@ def create_user(db:Session,user:schemas.MemberCreate):
     if (db_user):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="email already registered")
     else:    
-        hashed_password=pwd_context.hash(user.hashed_password)
+        hashed_password=pwd_context.hash(user.password)
         db_user=models.Member(
             name=user.name,
             email=user.email,
