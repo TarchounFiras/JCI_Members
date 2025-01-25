@@ -42,8 +42,8 @@ async def login_for_access_token(session:session_dep,form_data:Annotated[OAuth2P
 
 
 # **** UPDATE USER  (Admin)***
-@router.put("/admin/update_user_info",response_model=schemas.MemberPublicAdmin)
-async def update_user_admin(session:session_dep,token:Annotated[TokenData,Security(get_and_verif_token,scopes=["admin"])],updated_user:schemas.MemberUpdateAdmin,useremail:str,admin_pwd:str|None=None):
+@router.put("/admin/update_user_info",response_model=schemas.MemberPublicAdmin,description=" update presence and points + user details ,   IMMPORTANT : both admin  and user roles are required")
+async def update_user_admin(session:session_dep,token:Annotated[TokenData,Security(get_and_verif_token,scopes=["admin","user"])],updated_user:schemas.MemberUpdateAdmin,useremail:str,admin_pwd:str|None=None):
     user=cruduser.update_user_admin(session,updated_user,useremail,token.email,admin_pwd)
     if user is None:
         raise HTTPException(
@@ -57,7 +57,7 @@ async def update_user_admin(session:session_dep,token:Annotated[TokenData,Securi
 
 
 # **** UPDATE USER  (user)***
-@router.put("/user/update_user_info",response_model=schemas.MemberPublic)
+@router.put("/user/update_user_info",response_model=schemas.MemberPublic,description=" update user details ,   IMMPORTANT : user role is required")
 async def update_user(session:session_dep,token:Annotated[TokenData,Security(get_and_verif_token,scopes=["user"])],updated_user:schemas.MemberUpdate,old_password:str|None=None):
     user=cruduser.update_user_admin(session,updated_user,token.email,old_password)
     if user is None:
@@ -73,7 +73,7 @@ async def update_user(session:session_dep,token:Annotated[TokenData,Security(get
 
 
 # **** DELETE USER ***
-@router.delete("/admin/delete_user",status_code=status.HTTP_200_OK)
-async def delete_user(session:session_dep,token:Annotated[TokenData,Security(get_and_verif_token,scopes=["admin"])],password:str):
+@router.delete("/admin/delete_user",status_code=status.HTTP_200_OK,description=" ,   IMMPORTANT : both admin  and user roles are required")
+async def delete_user(session:session_dep,token:Annotated[TokenData,Security(get_and_verif_token,scopes=["admin","user"])],password:str):
     return cruduser.delete_user(session,token.email,password)
 

@@ -75,7 +75,7 @@ def update_user_admin(db:Session,user:schemas.MemberUpdateAdmin,email:str,admin_
         db_admin=get_user_by_email(db,admin_email)
         if(not db_admin):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="admin email not found")
-        elif admin_pwd:
+        elif admin_pwd is not None:
             if verify_password(admin_pwd,db_admin.hashed_password):
                 db_user.hashed_password=pwd_context.hash(user.password)
             else:
