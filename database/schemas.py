@@ -34,7 +34,5 @@ class MemberUpdate(BaseModel):
 class MemberUpdateAdmin(MemberUpdate):
     points:int|None=None
     achievements:str|None=None
-    trend:str|None=None
-    rank:int|None=None
     joining_year:int|None=None
     presence:int|None=None
