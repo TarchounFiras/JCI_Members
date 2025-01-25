@@ -68,9 +68,6 @@ def update_user_admin(db:Session,user:schemas.MemberUpdateAdmin,email:str,admin_
     if user.achievements:
         db_user.achievements=user.achievements
 
-    if user.trend:
-        db_user.trend=user.trend
-    
     if user.presence:
         db_user.presence=user.presence
 
