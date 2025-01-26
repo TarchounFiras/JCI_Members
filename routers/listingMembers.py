@@ -1,8 +1,8 @@
 from fastapi import APIRouter,HTTPException,status,Security
 from typing import Annotated
-from ..database import cruduser ,schemas
-from ..dependencies import session_dep,get_and_verif_token,TokenData
-from ..database.memberList import list_members
+from database import cruduser ,schemas
+from dependencies import session_dep,get_and_verif_token,TokenData
+from database.memberList import list_members
 
 router=APIRouter()
 

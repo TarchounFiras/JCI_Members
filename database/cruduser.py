@@ -1,8 +1,9 @@
 from sqlmodel import Session,select
-from . import models ,schemas
+
+import models ,schemas
 from fastapi import HTTPException,status
 from passlib.context import CryptContext
-from ..dependencies import verify_password
+from dependencies import verify_password
 
 def get_user_by_email(db:Session,email:str):
     db_user=db.exec(select(models.Member).where(models.Member.email==email)).first()
@@ -110,7 +111,7 @@ def delete_user(db:Session,email:str,admin_email,admin_pwd:str):
         
         else:
             db.delete(db_user)
-            db.commit()
+            db.commit()  
             return {email:"deleted"}
         
 

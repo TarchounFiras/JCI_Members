@@ -1,8 +1,9 @@
 
+
 from fastapi import Depends,HTTPException,status
 from typing import Annotated
-from .database.database import engine
-from .database import cruduser
+from database.database import engine
+from database import cruduser
 from sqlmodel import Session
 from datetime import date,timedelta
 from datetime import datetime, timedelta,timezone
