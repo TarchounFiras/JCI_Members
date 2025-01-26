@@ -4,17 +4,18 @@ from datetime import date
 class MemberPublic(BaseModel):
     name:str
     email:str
-    points:int
     avatar:str|None=None
+    points:int
+    presence:int
     achievements:str
     trend:str
     rank:int
     joining_year:int
 
 
+
 class MemberPublicAdmin(MemberPublic):
     birthday:date|None=None
-    presence:int
     
 class MemberCreate(BaseModel):
     name:str

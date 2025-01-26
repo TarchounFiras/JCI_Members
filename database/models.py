@@ -1,4 +1,3 @@
-from typing import List
 from sqlmodel import Field ,SQLModel
 from datetime import date
 

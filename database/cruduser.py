@@ -2,7 +2,6 @@ from sqlmodel import Session,select
 from . import models ,schemas
 from fastapi import HTTPException,status
 from passlib.context import CryptContext
-from datetime import date
 from ..dependencies import verify_password
 
 def get_user_by_email(db:Session,email:str):
@@ -71,21 +70,34 @@ def update_user_admin(db:Session,user:schemas.MemberUpdateAdmin,email:str,admin_
     if user.presence:
         db_user.presence=user.presence
 
-    if  user.password and admin_email:
-        db_admin=get_user_by_email(db,admin_email)
-        if(not db_admin):
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="admin email not found")
-        elif admin_pwd is not None:
-            if verify_password(admin_pwd,db_admin.hashed_password):
-                db_user.hashed_password=pwd_context.hash(user.password)
-            else:
-                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="incorrect admin password")
-            
+    if user.password:
+        if not admin_email or not admin_pwd:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Admin credentials required to change password"
+            )
+        
+        db_admin = get_user_by_email(db, admin_email)
+        if not db_admin:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Admin email not found"
+            )
+        
+        if not verify_password(admin_pwd, db_admin.hashed_password):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect admin password"
+            )
+    
+        db_user.hashed_password = pwd_context.hash(user.password)
+    
+    
     db.commit()
     db.refresh(db_user)
     return db_user
 
-def delete_user(*,db:Session,email:str,admin_email:str|None=None,admin_pwd:str):
+def delete_user(db:Session,email:str,admin_email,admin_pwd:str):
     db_user=get_user_by_email(db,email)
     if(db_user is None):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="email not found")
@@ -99,7 +111,7 @@ def delete_user(*,db:Session,email:str,admin_email:str|None=None,admin_pwd:str):
         else:
             db.delete(db_user)
             db.commit()
-            return db_user
+            return {email:"deleted"}
         
 
     
