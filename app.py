@@ -1,7 +1,7 @@
-from .database.database import engine
+from database.database import engine
 from sqlmodel import SQLModel
 from fastapi import FastAPI
-from .routers import usercrud,listingMembers
+from routers import usercrud,listingMembers
 
 from fastapi.middleware.cors import CORSMiddleware
 
