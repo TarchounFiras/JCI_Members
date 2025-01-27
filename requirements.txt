@@ -5,5 +5,5 @@ mysqlclient
 pymysql
 passlib
 jwt
-PyJwt
+PyJWT
 bcrypt
