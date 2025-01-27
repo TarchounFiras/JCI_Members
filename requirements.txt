@@ -5,5 +5,4 @@ mysqlclient
 pymysql
 passlib
 jwt
-PyJWT==1.7.1
 bcrypt
