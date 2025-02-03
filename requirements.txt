@@ -4,6 +4,5 @@ sqlmodel
 mysqlclient
 pymysql
 passlib
-jwt
 PyJWT
 bcrypt
