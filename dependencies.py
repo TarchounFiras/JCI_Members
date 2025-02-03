@@ -11,7 +11,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 
 import jwt
-from jwt.exceptions import PyJWTError
+from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 from fastapi.security import (OAuth2PasswordBearer , OAuth2PasswordRequestForm , SecurityScopes)
 
@@ -116,6 +116,6 @@ def get_and_verif_token(security_scopes:SecurityScopes,token:Annotated[str,Depen
                     headers={"WWW-Authenticate": authenticate_value},
                 )
         
-    except (PyJWTError,ValidationError):
+    except (InvalidTokenError,ValidationError):
         raise credentials_exception
     return token_data

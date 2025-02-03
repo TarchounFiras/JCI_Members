@@ -17,6 +17,8 @@ class Member(SQLModel, table=True):
     joining_year:int=Field(default=date.today().year)
 
 
+
+
     
     
 
