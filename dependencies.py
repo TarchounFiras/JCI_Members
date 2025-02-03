@@ -11,7 +11,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 
 import jwt
-from jwt.exceptions import InvalidTokenError
+from jwt.exceptions import DecodeError as InvalidTokenError
 from pydantic import ValidationError
 from fastapi.security import (OAuth2PasswordBearer , OAuth2PasswordRequestForm , SecurityScopes)
 
