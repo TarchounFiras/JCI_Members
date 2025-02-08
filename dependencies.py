@@ -29,6 +29,12 @@ def get_session():
         yield session
 session_dep=Annotated[Session,Depends(get_session)]
 
+def vacuum_database():
+    with Session(engine) as session:
+        session.exec("VACUUM;") 
+        session.commit()
+        
+
 
 
     

@@ -3,7 +3,7 @@ from sqlmodel import Session,select
 from database import models ,schemas
 from fastapi import HTTPException,status
 from passlib.context import CryptContext
-from dependencies import verify_password
+from dependencies import verify_password,vacuum_database
 
 def get_user_by_email(db:Session,email:str):
     db_user=db.exec(select(models.Member).where(models.Member.email==email)).first()
@@ -98,6 +98,7 @@ def update_user_admin(db:Session,user:schemas.MemberUpdateAdmin,email:str,admin_
     db.refresh(db_user)
     return db_user
 
+delete_counter=0
 def delete_user(db:Session,email:str,admin_email,admin_pwd:str):
     db_user=get_user_by_email(db,email)
     if(db_user is None):
@@ -110,6 +111,12 @@ def delete_user(db:Session,email:str,admin_email,admin_pwd:str):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="incorrect admin password")
         
         else:
+            global delete_counter
+            delete_counter+=1
+            if delete_counter>=50:
+                vacuum_database()
+                delete_counter=0
+
             db.delete(db_user)
             db.commit()  
             return {email:"deleted"}
