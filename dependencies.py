@@ -9,7 +9,7 @@ from datetime import date,timedelta
 from datetime import datetime, timedelta,timezone
 from passlib.context import CryptContext
 from pydantic import BaseModel
-
+from sqlalchemy import text
 import jwt
 from jwt.exceptions import DecodeError as InvalidTokenError
 from pydantic import ValidationError
@@ -31,13 +31,19 @@ session_dep=Annotated[Session,Depends(get_session)]
 
 def vacuum_database():
     with Session(engine) as session:
-        session.exec("VACUUM;") 
+        session.exec(text("VACUUM;")) 
         session.commit()
         
 
+def set_sqlite_pragmas():
+    with Session(engine) as session:
+        session.exec(text("PRAGMA journal_mode=WAL;"))
+        session.exec(text("PRAGMA synchronous=1;"))
+        session.exec(text("PRAGMA busy_timeout = 5000;"))
+        session.commit()
 
 
-    
+
 
 
 #****  LOGIN AND HANDLE JWT TOKEN ***
