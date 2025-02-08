@@ -1,3 +1,4 @@
+database.db
 .venv/
 
 .env
@@ -8,4 +9,4 @@ _pycache_/
 .vscode/
 .idea/
 
-.database.db
+
